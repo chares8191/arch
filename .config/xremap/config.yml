@@ -1,0 +1,9 @@
+keymap:
+  - name: Global Remaps
+    application:
+      not: [Emacs, ghostty]
+    remap:
+      KEY_LEFTMETA-KEY_LEFT: KEY_HOME
+      KEY_LEFTMETA-KEY_RIGHT: KEY_END
+      KEY_LEFTMETA-KEY_LEFTSHIFT-KEY_LEFT: KEY_LEFTSHIFT-KEY_HOME
+      KEY_LEFTMETA-KEY_LEFTSHIFT-KEY_RIGHT: KEY_LEFTSHIFT-KEY_END

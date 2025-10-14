@@ -1,0 +1,58 @@
+#!/bin/sh
+
+case "$0" in
+	*/*)
+		script_path="$0"
+		;;
+	*)
+		script_path="$(command -v -- "$0" 2>/dev/null || printf '%s' "$0")"
+		;;
+esac
+
+script_dir="$(CDPATH= cd -- "$(dirname -- "$script_path")" && pwd -P)" || exit 1
+target="${XRANDR_DISPLAY_MAP_BIN:-$script_dir/xrandr-display-map}"
+cmd_name="${0##*/}"
+
+if [ ! -x "$target" ]; then
+	printf 'xrandr-display-map-wrapper: executable not found at %s\n' "$target" >&2
+	exit 1
+fi
+
+case "$cmd_name" in
+	xrandr-display-map-wrapper|xr-display-map-wrapper)
+		exec "$target" "$@"
+		;;
+	xr_display_state)
+		subcmd="state"
+		;;
+	xr_display_state_map)
+		subcmd="state-map"
+		;;
+	xr_display_section)
+		subcmd="section"
+		;;
+	xr_display_section_map)
+		subcmd="section-map"
+		;;
+	xr_display_edid)
+		subcmd="edid"
+		;;
+	xr_display_edid_decoded)
+		subcmd="edid-decoded"
+		;;
+	xr_display_serial)
+		subcmd="serial"
+		;;
+	xr_display_serial_map)
+		subcmd="serial-map"
+		;;
+	xr_display_names)
+		subcmd="names"
+		;;
+	*)
+		printf 'xrandr-display-map-wrapper: unsupported command name %s\n' "$cmd_name" >&2
+		exit 1
+		;;
+esac
+
+exec "$target" "$subcmd" "$@"

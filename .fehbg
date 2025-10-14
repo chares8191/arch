@@ -1,0 +1,4 @@
+#!/bin/sh
+dir='/home/chares/.graphics/wg'
+random_file=$(ls "$dir"/* | shuf -n1)
+feh --no-fehbg --bg-fill "$random_file"

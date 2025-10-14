@@ -1,0 +1,38 @@
+#!/bin/sh
+SOURCE_DIR="/home/chares/.suckless"
+TARGET_DIR="/home/chares/src"
+
+suckless_reconfig() {
+    prog="$1"
+	prog_src_dir="$SOURCE_DIR/$prog"
+	prog_tgt_dir="$TARGET_DIR/$prog"
+    prog_src_config="$prog_src_dir/config.h"
+    prog_tgt_config="$prog_tgt_dir/config.h"
+
+	echo "$prog_src_config"
+    
+    if [ -f "$prog_src_config" ] && [ -d "$prog_tgt_dir" ]; then
+        if [ -f "$prog_tgt_config" ] && [ "$(stat -c '%U' "$prog_tgt_config")" = "root" ]; then
+            sudo cp -f "$prog_src_config" "$prog_tgt_config"
+            echo "Copied (with sudo) $prog_src_config to $prog_tgt_config"
+        else
+            cp -f "$prog_src_config" "$prog_tgt_config"
+            echo "Copied $prog_src_config to $prog_tgt_config"
+        fi
+		(
+		cd "$prog_tgt_dir" || { echo "Failed to cd to $prog_tgt_dir"; return; }
+		sudo make clean
+		sudo make install
+		echo "Built and installed $prog"
+		)
+    else
+        echo "Skipping $prog: source file or target dir missing"
+    fi
+}
+
+suckless_reconfig "st"
+suckless_reconfig "surf"
+suckless_reconfig "slstatus"
+suckless_reconfig "dmenu"
+suckless_reconfig "dwm"
+
