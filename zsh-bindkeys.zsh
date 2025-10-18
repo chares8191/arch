@@ -122,6 +122,61 @@ backward-line-mark() {
 }
 zle -N backward-line-mark
 
+_zsh_bindkeys_clipboard_write() {
+	emulate -L zsh
+	local data="$1"
+
+    if (( $+commands[xclip] )); then
+		print -rn -- "$data" | xclip -selection clipboard
+	elif (( $+commands[xsel] )); then
+		print -rn -- "$data" | xsel --clipboard --input
+	else
+		return 1
+	fi
+}
+
+_zsh_bindkeys_clipboard_read() {
+	emulate -L zsh
+
+    if (( $+commands[xclip] )); then
+		xclip -selection clipboard -o
+	elif (( $+commands[xsel] )); then
+		xsel --clipboard --output
+	else
+		return 1
+	fi
+}
+
+clipboard-cut-region() {
+	emulate -L zsh
+
+	if (( REGION_ACTIVE == 0 )); then return 1; fi
+
+	zle kill-region
+	_zsh_bindkeys_clipboard_write "$CUTBUFFER" 2>/dev/null || true
+}
+zle -N clipboard-cut-region
+
+clipboard-copy-region() {
+	emulate -L zsh
+
+	if (( REGION_ACTIVE == 0 )); then return 1; fi
+
+	zle copy-region-as-kill
+	_zsh_bindkeys_clipboard_write "$CUTBUFFER" 2>/dev/null || true
+}
+zle -N clipboard-copy-region
+
+clipboard-yank() {
+	emulate -L zsh
+
+	local clipboard
+	if clipboard=$(_zsh_bindkeys_clipboard_read 2>/dev/null); then CUTBUFFER=$clipboard; fi
+
+	zle yank
+}
+zle -N clipboard-yank
+
 # [RightArrow]
 bindkey '^[[C' forward-char-deactivate
 # [Shift] + [RightArrow]
@@ -155,6 +210,13 @@ bindkey '^[[1;6D' backward-word-mark
 bindkey '^[[1;9D' backward-line-deactivate
 # [Super] + [Shift] + [LeftArrow]
 bindkey '^[[1;10D' backward-line-mark
+
+# [Ctrl] + [w]
+bindkey '^W' clipboard-cut-region
+# [Alt | Option] + [w]
+bindkey '^[w' clipboard-copy-region
+# [Ctrl] + [y]
+bindkey '^Y' clipboard-yank
 
 # System Logging :: Logs ZSH_BINDKEYS Finish
 system_logger_entry "ZSH_BINDKEYS:FINISH" "zsh-bindkeys.zsh"
