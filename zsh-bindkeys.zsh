@@ -34,6 +34,22 @@ forward-word-mark() {
 }
 zle -N forward-word-mark
 
+forward-subword-deactivate() {
+	local WORDCHARS="${WORDCHARS//[._\/-]/}"
+	[[ $REGION_ACTIVE -ne 0 ]] && zle deactivate-region
+	zle .forward-word
+}
+zle -N forward-subword-deactivate
+
+forward-subword-mark() {
+	local WORDCHARS="${WORDCHARS//[._\/-]/}"
+	if [[ $REGION_ACTIVE -eq 0 ]]; then
+		zle set-mark-command
+	fi
+	zle .forward-word
+}
+zle -N forward-subword-mark
+
 forward-line-deactivate() {
 	[[ $REGION_ACTIVE -ne 0 ]] && zle deactivate-region
 	zle end-of-line
@@ -76,6 +92,22 @@ backward-word-mark() {
 }
 zle -N backward-word-mark
 
+backward-subword-deactivate() {
+	local WORDCHARS="${WORDCHARS//[._\/-]/}"
+	[[ $REGION_ACTIVE -ne 0 ]] && zle deactivate-region
+	zle .backward-word
+}
+zle -N backward-subword-deactivate
+
+backward-subword-mark() {
+	local WORDCHARS="${WORDCHARS//[._\/-]/}"
+	if [[ $REGION_ACTIVE -eq 0 ]]; then
+		zle set-mark-command
+	fi
+	zle .backward-word
+}
+zle -N backward-subword-mark
+
 backward-line-deactivate() {
 	[[ $REGION_ACTIVE -ne 0 ]] && zle deactivate-region
 	zle beginning-of-line
@@ -92,15 +124,19 @@ zle -N backward-line-mark
 
 bindkey '^[[C' forward-char-deactivate
 bindkey '^[[1;2C' forward-char-mark
-bindkey '^[[1;3C' forward-word-deactivate
-bindkey '^[[1;4C' forward-word-mark
+bindkey '^[[1;3C' forward-subword-deactivate
+bindkey '^[[1;4C' forward-subword-mark
+bindkey '^[[1;5C' forward-word-deactivate
+bindkey '^[[1;6C' forward-word-mark
 bindkey '^[[1;9C' forward-line-deactivate
 bindkey '^[[1;10C' forward-line-mark
 
 bindkey '^[[D' backward-char-deactivate
 bindkey '^[[1;2D' backward-char-mark
-bindkey '^[[1;3D' backward-word-deactivate
-bindkey '^[[1;4D' backward-word-mark
+bindkey '^[[1;3D' backward-subword-deactivate
+bindkey '^[[1;4D' backward-subword-mark
+bindkey '^[[1;5D' backward-word-deactivate
+bindkey '^[[1;6D' backward-word-mark
 bindkey '^[[1;9D' backward-line-deactivate
 bindkey '^[[1;10D' backward-line-mark
 
