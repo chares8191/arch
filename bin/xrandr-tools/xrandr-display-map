@@ -21,6 +21,14 @@ xr_display_names() {
 	'
 }
 
+xr_connected_display_names() {
+	verbose="$(xr_resolve_verbose "${1-}")" || return 1
+
+	printf '%s' "$verbose" | awk '
+		/^[^[:space:]]+ connected/ { print $1 }
+	'
+}
+
 xr_display_state() {
 	display="$1"
 	[ -n "$display" ] || return 1
@@ -197,6 +205,7 @@ Commands:
   serial <display>        Print serial number for a display
   serial-map              Print display=serial map (blank value if unavailable)
   names                   List display names detected in xrandr --verbose output
+  connected-names         List display names currently connected
   help                    Show this message
 EOF
 }
@@ -235,6 +244,9 @@ xr_cli() {
 			;;
 		names)
 			xr_display_names
+			;;
+		connected-names)
+			xr_connected_display_names
 			;;
 		help|"")
 			xr_cli_usage

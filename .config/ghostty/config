@@ -47,6 +47,8 @@ font-family = "Space Mono"
 font-size = 16
 font-thicken = true
 
+background-opacity = 0.84
+
 adjust-underline-position = 40%
 adjust-underline-thickness = -60%
 

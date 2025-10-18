@@ -49,6 +49,9 @@ case "$cmd_name" in
 	xr_display_names)
 		subcmd="names"
 		;;
+	xr_connected_display_names)
+		subcmd="connected-names"
+		;;
 	*)
 		printf 'xrandr-display-map-wrapper: unsupported command name %s\n' "$cmd_name" >&2
 		exit 1
