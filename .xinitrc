@@ -17,10 +17,15 @@ XRANDR_TOOLS_DIR="$HOME_BIN_DIRECTORY/xrandr-tools"
 export XRANDR_TOOLS_DIR
 # System Path :: Xrandr Tools
 export PATH="$XRANDR_TOOLS_DIR:$PATH"
-
-# TODO: Confirm that the xrandr tools are actally available here first.
-
-# export XINIT_XRANDR_OUTPUT="$(xrandr --verbose)"
+# Startup Variables :: Xrandr State
+XINITRC_XRANDR_STATE="$(xrandr --verbose)"
+export XINITRC_XRANDR_STATE
+# Startup Variables :: 40B0 Dock State
+XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
+export XINITRC_40B0_DOCK_STATE
+# Startup Variables :: Connected Displays List
+XINITRC_CONNECTED_DISPLAYS="$(xr_connected_display_names)"
+export XINITRC_CONNECTED_DISPLAYS
 # export XINIT_SERIAL_MAP="$(xr_display_serial_map "$XINIT_XRANDR_OUTPUT")" # TODO: Is this xr_display_serial_map function actually available?
 # export XINIT_CONNECTED_DISPLAYS="$(xr_display_state_map "$XINIT_XRANDR_OUTPUT" | awk -F= '$2 == "connected" {print $1}' | tr '\n' ' ' | sed 's/ $//')"
 # export XINIT_40B0_STATUS="$(boltctl list | grep -A 10 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
