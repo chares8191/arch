@@ -52,6 +52,15 @@ case "$cmd_name" in
 	xr_connected_display_names)
 		subcmd="connected-names"
 		;;
+	xr_display_geometry)
+		subcmd="geometry"
+		;;
+	xr_display_geometry_map)
+		subcmd="geometry-map"
+		;;
+	xr_display_label_line)
+		subcmd="label-line"
+		;;
 	*)
 		printf 'xrandr-display-map-wrapper: unsupported command name %s\n' "$cmd_name" >&2
 		exit 1

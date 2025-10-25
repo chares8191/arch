@@ -44,7 +44,7 @@
 
 theme = Gruvbox Dark
 font-family = "Space Mono"
-font-size = 16
+font-size = 14
 font-thicken = true
 
 background-opacity = 0.84

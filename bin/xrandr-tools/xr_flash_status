@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# Flash the dwm status bar with connected monitor labels using xrandr data.
+
+case "$0" in
+	*/*)
+		script_path="$0"
+		;;
+	*)
+		script_path="$(command -v -- "$0" 2>/dev/null || printf '%s' "$0")"
+		;;
+esac
+
+script_dir="$(CDPATH= cd -- "$(dirname -- "$script_path")" && pwd -P)" || exit 1
+
+duration="${1:-1}"
+
+get_root_name() {
+	for prop in _NET_WM_NAME WM_NAME; do
+		line="$(xprop -root "$prop" 2>/dev/null)" || continue
+		value="$(printf '%s\n' "$line" | awk -F\" '
+			{
+				out = ""
+				for (i = 2; i <= NF; i += 2) {
+					if (out != "")
+						out = out " "
+					out = out $i
+				}
+				if (out != "")
+					print out
+			}
+		' | head -n 1 2>/dev/null)"
+		if [ -n "$value" ]; then
+			printf '%s' "$value"
+			return 0
+		fi
+	done
+	return 1
+}
+
+orig_status="$(get_root_name 2>/dev/null || true)"
+
+label="$("$script_dir/xr_display_label_line" 2>/dev/null)"
+
+if [ -z "$label" ]; then
+	printf 'xr_flash_status: no connected displays detected\n' >&2
+	exit 1
+fi
+
+restore_needed=0
+restored=0
+
+restore_status() {
+	if [ "$restored" = "1" ]; then
+		return
+	fi
+	if [ "$restore_needed" = "1" ]; then
+		if [ -n "$orig_status" ]; then
+			xsetroot -name "$orig_status"
+		else
+			xsetroot -name ""
+		fi
+	fi
+	restored=1
+}
+
+trap 'restore_status' EXIT INT TERM HUP
+
+if ! xsetroot -name "$label"; then
+	printf 'xr_flash_status: failed to set root window name\n' >&2
+	exit 1
+fi
+
+restore_needed=1
+
+sleep "$duration" 2>/dev/null || sleep 1
+
+restore_status
+
+exit 0
