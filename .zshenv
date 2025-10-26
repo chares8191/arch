@@ -32,6 +32,12 @@ export CHARES_BIN="/home/chares/bin"
 if [[ -d "$CHARES_BIN" && ":$PATH:" != *":$CHARES_BIN:"* ]]; then
 	PATH="$PATH:$CHARES_BIN"
 fi
+# XRandR Utils :: Binary Directory
+export XRANDR_UTILS_BIN="$CHARES_BIN/xrandr-utils/bin"
+# System Path :: Prepends XRandR Utils Binary Directory
+if [[ -d "$XRANDR_UTILS_BIN" && ":$PATH:" != *":$XRANDR_UTILS_BIN:"* ]]; then
+	PATH="$XRANDR_UTILS_BIN:$PATH"
+fi
 # System Files :: Bun /bin Directory
 export BUN_BIN="/home/chares/.bun/bin"
 # System Path :: Appends Bun /bin Directory

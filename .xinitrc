@@ -12,12 +12,8 @@ fi
 if [ -f "$SYSTEM_SHELL_LOGGER" ]; then . "$SYSTEM_SHELL_LOGGER"; fi
 # System Logging :: Logs XINITRC Start
 system_logger_entry "XINITRC:START" ".xinitrc"
-# System Files :: Xrandr Tools
-export XRANDR_TOOLS_DIR="$CHARES_BIN/xrandr-tools"
-# System Path :: Xrandr Tools
-if [[ -d "$XRANDR_TOOLS_DIR" && ":$PATH:" != *":$XRANDR_TOOLS_DIR:"* ]]; then
-	export PATH="$PATH:$XRANDR_TOOLS_DIR"
-fi
+# System Files :: Xrandr Utils
+export XRANDR_UTILS_DIR="$CHARES_BIN/xrandr-utils"
 # System Files :: ThinkPad Screen Xresources File
 export XRESOURCES_THINKPAD_FILE="$CHARES_HOME/.Xresources.thinkpad"
 # System Files :: Common Xresources File
@@ -30,8 +26,6 @@ export XINITRC_40B0_LEFT_SERIAL="VKMT4735"
 export XINITRC_40B0_RIGHT_SERIAL="VKMT5210"
 # Startup Variables :: Xrandr State
 export XINITRC_XRANDR_STATE="$(xrandr --verbose)"
-# Startup Variables :: Connected Displays List
-export XINITRC_CONNECTED_DISPLAY_NAMES="$(xr_connected_display_names)"
 # Startup Variables :: 40B0 Dock State
 export XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
 
