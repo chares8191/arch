@@ -13,32 +13,27 @@ if [ -f "$SYSTEM_SHELL_LOGGER" ]; then . "$SYSTEM_SHELL_LOGGER"; fi
 # System Logging :: Logs XINITRC Start
 system_logger_entry "XINITRC:START" ".xinitrc"
 # System Files :: Xrandr Tools
-XRANDR_TOOLS_DIR="$HOME_BIN_DIRECTORY/xrandr-tools"
-export XRANDR_TOOLS_DIR
+export XRANDR_TOOLS_DIR="$CHARES_BIN/xrandr-tools"
 # System Path :: Xrandr Tools
-export PATH="$XRANDR_TOOLS_DIR:$PATH"
-# Startup Variables :: Xrandr State
-XINITRC_XRANDR_STATE="$(xrandr --verbose)"
-export XINITRC_XRANDR_STATE
-# Startup Variables :: 40B0 Dock State
-XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
-export XINITRC_40B0_DOCK_STATE
-# Startup Variables :: Connected Displays List
-XINITRC_CONNECTED_DISPLAYS="$(xr_connected_display_names)"
-export XINITRC_CONNECTED_DISPLAYS
-# export XINIT_SERIAL_MAP="$(xr_display_serial_map "$XINIT_XRANDR_OUTPUT")" # TODO: Is this xr_display_serial_map function actually available?
-# export XINIT_CONNECTED_DISPLAYS="$(xr_display_state_map "$XINIT_XRANDR_OUTPUT" | awk -F= '$2 == "connected" {print $1}' | tr '\n' ' ' | sed 's/ $//')"
-# export XINIT_40B0_STATUS="$(boltctl list | grep -A 10 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
-
+if [[ -d "$XRANDR_TOOLS_DIR" && ":$PATH:" != *":$XRANDR_TOOLS_DIR:"* ]]; then
+	export PATH="$PATH:$XRANDR_TOOLS_DIR"
+fi
 # System Files :: ThinkPad Screen Xresources File
-XRESOURCES_THINKPAD_FILE="$HOME/.Xresources.thinkpad"
-export XRESOURCES_THINKPAD_FILE
+export XRESOURCES_THINKPAD_FILE="$CHARES_HOME/.Xresources.thinkpad"
 # System Files :: Common Xresources File
-XRESOURCES_COMMON_FILE="$HOME/.Xresources.common"
-export XRESOURCES_COMMON_FILE
-
-# TODO: Adjust this logic to specifically check for XINIT_40B0_STATUS "connected" and specific monitor serials, else fallback to eDP-1.
-# if [ "$XINIT_CONNECTED_DISPLAYS" = "eDP-1" ] || [ "$XINIT_40B0_STATUS" = "disconnected" ]; then
+export XRESOURCES_COMMON_FILE="$CHARES_HOME/.Xresources.common"
+# Startup Variables :: ThinkPad Screen Serial
+export XINITRC_THINKPAD_SERIAL="MNE001EA1-4"
+# Startup Variables :: 40B0 Left Monitor Serial
+export XINITRC_40B0_LEFT_SERIAL="VKMT4735"
+# Startup Variables :: 40B0 Right Monitor Serial
+export XINITRC_40B0_RIGHT_SERIAL="VKMT5210"
+# Startup Variables :: Xrandr State
+export XINITRC_XRANDR_STATE="$(xrandr --verbose)"
+# Startup Variables :: Connected Displays List
+export XINITRC_CONNECTED_DISPLAY_NAMES="$(xr_connected_display_names)"
+# Startup Variables :: 40B0 Dock State
+export XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
 
 # Xrandr Output :: ThinkPad Screen
 xrandr --output eDP-1 --auto
@@ -48,20 +43,20 @@ xrdb -merge "$XRESOURCES_THINKPAD_FILE"
 xrdb -merge "$XRESOURCES_COMMON_FILE"
 
 dunst &  # TODO: What is this?
-xremap "$HOME/.config/xremap/config.yml" &  # TODO: Should this be in a different file?
+xremap "$CHARES_CONFIG/xremap/config.yml" &  # TODO: Should this be in a different file?
 picom -b &  # TODO: What is this?
 slstatus &  # TODO: What is this?
-sh "$HOME/.fehbg" & # TODO: Why is this executed here?
+sh "$CHARES_HOME/.fehbg" & # TODO: Why is this executed here?
 
 # System Logging :: Logs Window Manager Handoff Point
 system_logger_entry "XINITRC:START_DWM" ".xinitrc"
 # System Startup :: Clears dmenu Cache
-rm -f "$HOME/.cache/dmenu_run"
+rm -f "$CHARES_HOME/.cache/dmenu_run"
 # System Logging :: Sets Interactive Log Context
 system_logger_set_context "INTERACTIVE_SHELL" ".xinitrc"
 # System Startup :: Starts Window Manager
 while true; do
-	dwm 2> "$HOME/.dwm.log"
+	dwm 2> "$CHARES_HOME/.dwm.log"
 done
 # System Logging :: Logs XINITRC Finish
 system_logger_entry "XINITRC:FINISH" ".xinitrc"

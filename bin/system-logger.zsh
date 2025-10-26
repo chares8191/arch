@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 SYSTEM_SHELL_LOG_FILE="${SYSTEM_SHELL_LOG_FILE:-$HOME/.shell.log}"
 export SYSTEM_SHELL_LOG_FILE
