@@ -12,13 +12,8 @@ fi
 if [ -f "$SYSTEM_SHELL_LOGGER" ]; then . "$SYSTEM_SHELL_LOGGER"; fi
 # System Logging :: Logs XINITRC Start
 system_logger_entry "XINITRC:START" ".xinitrc"
-# System Files :: Xrandr Utils
-# export XRANDR_UTILS_DIR="$CHARES_HOME/.local/src/xrandr-utils"
-export XRANDR_UTILS_TEST="$(xrandr-utils display_state_map)"
-# System Files :: ThinkPad Screen Xresources File
-export XRESOURCES_THINKPAD_FILE="$CHARES_HOME/.Xresources.thinkpad"
-# System Files :: Common Xresources File
-export XRESOURCES_COMMON_FILE="$CHARES_HOME/.Xresources.common"
+# System Files :: Xresources File
+export XRESOURCES_FILE="$CHARES_HOME/.Xresources"
 # Startup Variables :: 40B0 Left Monitor Serial
 export XINITRC_40B0_LEFT_SERIAL="VKMT4735"
 # Startup Variables :: 40B0 Right Monitor Serial
@@ -28,12 +23,10 @@ export XINITRC_XRANDR_STATE="$(xrandr --verbose)"
 # Startup Variables :: 40B0 Dock State
 export XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
 
-# Xrandr Output :: ThinkPad Screen
-xrandr --output eDP-1 --auto
-# X Server Startup :: Merges Laptop Screen Xresources
-xrdb -merge "$XRESOURCES_THINKPAD_FILE"
-# X Server Startup :: Merges Common Xresources
-xrdb -merge "$XRESOURCES_COMMON_FILE"
+# Xrandr Output
+xrandr --output eDP-1 --auto --primary
+# X Server Startup :: Merges  Xresources
+xrdb -merge "$XRESOURCES_FILE"
 
 dunst &  # TODO: What is this?
 xremap "$CHARES_CONFIG/xremap/config.yml" &  # TODO: Should this be in a different file?
