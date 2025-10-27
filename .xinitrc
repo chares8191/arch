@@ -23,8 +23,13 @@ export XINITRC_XRANDR_STATE="$(xrandr --verbose)"
 # Startup Variables :: 40B0 Dock State
 export XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
 
+# Test xrandr-utils
+export XINITRC_XRANDR_UTILS_TEST="$(xrandr-utils display_serial_map)"
+
 # Xrandr Output
 xrandr --output eDP-1 --auto --primary
+# Xft DPI override before main Xresources merge
+printf 'Xft.dpi: 192\n' | xrdb -merge -
 # X Server Startup :: Merges  Xresources
 xrdb -merge "$XRESOURCES_FILE"
 
