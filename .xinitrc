@@ -13,13 +13,12 @@ if [ -f "$SYSTEM_SHELL_LOGGER" ]; then . "$SYSTEM_SHELL_LOGGER"; fi
 # System Logging :: Logs XINITRC Start
 system_logger_entry "XINITRC:START" ".xinitrc"
 # System Files :: Xrandr Utils
-export XRANDR_UTILS_DIR="$CHARES_BIN/xrandr-utils"
+# export XRANDR_UTILS_DIR="$CHARES_HOME/.local/src/xrandr-utils"
+export XRANDR_UTILS_TEST="$(xrandr-utils display_state_map)"
 # System Files :: ThinkPad Screen Xresources File
 export XRESOURCES_THINKPAD_FILE="$CHARES_HOME/.Xresources.thinkpad"
 # System Files :: Common Xresources File
 export XRESOURCES_COMMON_FILE="$CHARES_HOME/.Xresources.common"
-# Startup Variables :: ThinkPad Screen Serial
-export XINITRC_THINKPAD_SERIAL="MNE001EA1-4"
 # Startup Variables :: 40B0 Left Monitor Serial
 export XINITRC_40B0_LEFT_SERIAL="VKMT4735"
 # Startup Variables :: 40B0 Right Monitor Serial

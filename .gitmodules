@@ -1,0 +1,6 @@
+[submodule ".local/src/xrandr-utils"]
+	path = .local/src/xrandr-utils
+	url = git@github.com:chares8191/xrandr-utils.git
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = git@github.com:chares8191/emacs.git
