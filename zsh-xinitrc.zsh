@@ -6,26 +6,38 @@
 # System Logging :: Logs ZSH_XINITRC Start
 system_logger_entry "ZSH_XINITRC:START" "zsh-xinitrc.zsh"
 
-# System Variables :: 40B0 Left Monitor Serial
+# System Files :: Xresources File
+export XRESOURCES_FILE="${XRESOURCES_FILE:-$HOME_DIR/.Xresources}"
+
+# Startup Variables :: 40B0 Left Monitor Serial
 export XINITRC_40B0_LEFT_SERIAL="VKMT4735"
-# System Variables :: 40B0 Right Monitor Serial
+# Startup Variables :: 40B0 Right Monitor Serial
 export XINITRC_40B0_RIGHT_SERIAL="VKMT5210"
 
-# X Startup Variables :: Xrandr Startup State
+# Startup Variables :: Xrandr Startup State
 export XINITRC_XRANDR_STATE="$(xrandr --verbose)"
+# Startup Variables :: Xrandr Connected Displays
+export XINITRC_XRANDR_DISPLAYS="$(
+	printf '%s\n' "$XINITRC_XRANDR_STATE" | xrandr-utils display_names --connected
+)"
+# Startup Variables :: Xrandr Startup Serials
+export XINITRC_XRANDR_SERIALS="$(
+	printf '%s\n' "$XINITRC_XRANDR_STATE" | xrandr-utils display_serial_map --values
+)"
 
-# X Startup Variables :: Xrandr Connected Displays
-export XINITRC_XRANDR_DISPLAYS="$(printf '%s\n' "$XINITRC_XRANDR_STATE" | xrandr-utils display_names --connected)"
-
-# X Startup Variables :: Xrandr Startup Serials
-export XINITRC_XRANDR_SERIALS="$(printf '%s\n' "$XINITRC_XRANDR_STATE" | xrandr-utils display_serial_map --values)"
-
-# X Startup Variables :: 40B0 Dock State
-export XINITRC_40B0_DOCK_STATE="$(boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1)"
-
-export XINITRC_40B0_DOCK_CONNECTED="$([ "$XINITRC_40B0_DOCK_STATE" = authorized ] && printf '1' || printf '0')"
-export XINITRC_40B0_LEFT_CONNECTED="$(printf '%s\n' "$XINITRC_XRANDR_SERIALS" | grep -qi -- "$XINITRC_40B0_LEFT_SERIAL" && printf '1' || printf '0')"
-export XINITRC_40B0_RIGHT_CONNECTED="$(printf '%s\n' "$XINITRC_XRANDR_SERIALS" | grep -qi -- "$XINITRC_40B0_RIGHT_SERIAL" && printf '1' || printf '0')"
+# Startup Variables :: 40B0 Dock State
+export XINITRC_40B0_DOCK_STATE="$(
+	boltctl list | grep -A 13 'ThinkPad Thunderbolt 4 Dock' | grep 'status:' | awk '{print $3}' | head -n 1
+)"
+export XINITRC_40B0_DOCK_CONNECTED="$(
+	[[ "$XINITRC_40B0_DOCK_STATE" = "authorized" ]] && printf '1' || printf '0'
+)"
+export XINITRC_40B0_LEFT_CONNECTED="$(
+	printf '%s\n' "$XINITRC_XRANDR_SERIALS" | grep -qi -- "$XINITRC_40B0_LEFT_SERIAL" && printf '1' || printf '0'
+)"
+export XINITRC_40B0_RIGHT_CONNECTED="$(
+	printf '%s\n' "$XINITRC_XRANDR_SERIALS" | grep -qi -- "$XINITRC_40B0_RIGHT_SERIAL" && printf '1' || printf '0'
+)"
 
 # Xrandr Output
 xrandr --output eDP-1 --auto --primary
@@ -35,7 +47,7 @@ printf 'Xft.dpi: 192\n' | xrdb -merge -
 xrdb -merge "$XRESOURCES_FILE"
 
 dunst &  # TODO: What is this?
-xremap "$CHARES_CONFIG/xremap/config.yml" &  # TODO: Should this be in a different file?
+xremap "$CONFIG_DIR/xremap/config.yml" &  # TODO: Should this be in a different file?
 picom -b &  # TODO: What is this?
 slstatus &  # TODO: What is this?
 sh "$CHARES_HOME/.fehbg" & # TODO: Why is this executed here?

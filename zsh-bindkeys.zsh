@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-# ZSH_BINDKEYS
-# Loaded by ZSHRC
+# ZSH_BINDKEYS (zsh)
+# Loaded by: ZSHRC
 
 # System Logging :: Logs ZSH_BINDKEYS Start
 system_logger_entry "ZSH_BINDKEYS:START" "zsh-bindkeys.zsh"

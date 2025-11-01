@@ -32,6 +32,7 @@ suckless_reconfig() {
 
 suckless_reconfig "st"
 suckless_reconfig "surf"
+suckless_reconfig "slock"
 suckless_reconfig "slstatus"
 suckless_reconfig "dmenu"
 suckless_reconfig "dwm"
