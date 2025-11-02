@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+emulate -L zsh
 
 # ZLOGIN (zsh)
 unset __resource __filename
@@ -11,11 +11,13 @@ if [[ "${SYSTEM_LOGGER_CONTEXT:-}" != "STARTUP_LOGIN_SHELL" ]]; then
 fi
 # System Logging :: Logs ZLOGIN Start
 system_logger_entry "$__resource:START" "$__filename"
+
 # System Startup :: Starts X Server
 if [[ -z ${DISPLAY:-} && ${XDG_VTNR:-0} -eq 1 ]]; then
 	# System Logging :: Logs X Server Handoff Point
-	system_logger_entry "$__resource:START_X" "$__filename"
+	system_logger_entry "$__resource:STARTX" "$__filename"
 	exec startx
 fi
+
 # System Logging :: Logs ZLOGIN Finish
 system_logger_entry "$__resource:FINISH" "$__filename"

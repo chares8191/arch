@@ -1,10 +1,12 @@
-#!/bin/zsh
+emulate -L zsh
 
 # ZSH_BINDKEYS (zsh)
-# Loaded by: ZSHRC
+unset __resource __filename
+typeset __resource="ZSH_BINDKEYS"
+typeset __filename="zsh-bindkeys.zsh"
 
 # System Logging :: Logs ZSH_BINDKEYS Start
-system_logger_entry "ZSH_BINDKEYS:START" "zsh-bindkeys.zsh"
+system_logger_entry "$__resource:START" "$__filename"
 
 forward-char-deactivate() {
 	[[ $REGION_ACTIVE -ne 0 ]] && zle deactivate-region
@@ -124,12 +126,12 @@ zle -N backward-line-mark
 
 _zsh_bindkeys_clipboard_write() {
 	emulate -L zsh
-	local data="$1"
+	local __data="$1"
 
     if (( $+commands[xclip] )); then
-		print -rn -- "$data" | xclip -selection clipboard
+		print -rn -- "$__data" | xclip -selection clipboard
 	elif (( $+commands[xsel] )); then
-		print -rn -- "$data" | xsel --clipboard --input
+		print -rn -- "$__data" | xsel --clipboard --input
 	else
 		return 1
 	fi
@@ -219,4 +221,4 @@ bindkey '^[w' clipboard-copy-region
 bindkey '^Y' clipboard-yank
 
 # System Logging :: Logs ZSH_BINDKEYS Finish
-system_logger_entry "ZSH_BINDKEYS:FINISH" "zsh-bindkeys.zsh"
+system_logger_entry "$__resource:FINISH" "$__filename"

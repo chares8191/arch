@@ -18,7 +18,12 @@ if [[ -z "${SYSTEM_LOGGER_CONTEXT:-}" ]]; then
 	export SYSTEM_LOGGER_CONTEXT="STARTUP_LOGIN_SHELL"
 fi
 # System Files :: Exports SYSTEM_SHELL_LOGGER File
-export SYSTEM_SHELL_LOGGER="${SYSTEM_SHELL_LOGGER:-$HOME_DIR/bin/system-shell-logger.zsh}"
+typeset __system_shell_logger_default="$HOME_DIR/bin/system-shell-logger.zsh"
+if [[ -z "${SYSTEM_SHELL_LOGGER:-}" || ! -f "$SYSTEM_SHELL_LOGGER" ]]; then
+	SYSTEM_SHELL_LOGGER="$__system_shell_logger_default"
+fi
+export SYSTEM_SHELL_LOGGER
+unset __system_shell_logger_default
 # System Log Files :: Exports SYSTEM_SHELL_LOG_FILE Log File
 export SYSTEM_SHELL_LOG_FILE="${SYSTEM_SHELL_LOG_FILE:-$HOME_DIR/.shell.log}"
 # System Startup :: Sources SYSTEM_SHELL_LOGGER File
@@ -90,8 +95,8 @@ export XRESOURCES_FILE="${XRESOURCES_FILE:-$HOME_DIR/.Xresources}"
 export ZSH_BINDKEYS_FILE="${ZSH_BINDKEYS_FILE:-$HOME_DIR/zsh-bindkeys.zsh}"
 # System Files :: Exports ZSH_ALIASES_FILE File
 export ZSH_ALIASES_FILE="${ZSH_ALIASES_FILE:-$HOME_DIR/zsh-aliases.zsh}"
-# System Files :: Exports ZSH_XINITRC_FILE File
-export ZSH_XINITRC_FILE="${ZSH_XINITRC_FILE:-$HOME_DIR/zsh-xinitrc.zsh}"
+# System Files :: Exports ZSH_XINIT_FILE File
+export ZSH_XINIT_FILE="${ZSH_XINIT_FILE:-$HOME_DIR/zsh-xinit.zsh}"
 
 # User Folders :: Exports SCREENSHOTS_FOLDER Folder
 export SCREENSHOTS_FOLDER="${SCREENSHOTS_FOLDER:-$HOME_DIR/Screenshots}"

@@ -1,10 +1,13 @@
-#!/bin/zsh
+emulate -L zsh
 
-# ZSH_ALIASES
-# Loaded by ZSHRC
+# ZSH_ALIASES (zsh)
+unset __resource __filename
+typeset __resource="ZSH_ALIASES"
+typeset __filename="zsh-aliases.zsh"
 
 # System Logging :: Logs ZSH_ALIASES Start
-system_logger_entry "ZSH_ALIASES:START" "zsh-aliases.zsh"
+system_logger_entry "$__resource:START" "$__filename"
+
 # Interactive Shell Alias :: Regular Sudo
 alias rsudo="sudo"
 # Interactive Shell Alias :: Sudo + Env
@@ -19,5 +22,6 @@ alias pbcopy="xclip -selection clipboard"
 alias pbpaste="xclip -selection clipboard -o"
 # Interactive Shell Alias :: grok_cli
 alias grok_cli="bun /home/chares/src/grok-cli/dist/index.js"
+
 # System Logging :: Logs ZSH_ALIASES Finish
-system_logger_entry "ZSH_ALIASES:FINISH" "zsh-aliases.zsh"
+system_logger_entry "$__resource:FINISH" "$__filename"
