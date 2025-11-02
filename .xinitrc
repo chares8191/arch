@@ -22,22 +22,22 @@ xrandr --output eDP-1 --auto --primary
 # X Server Startup :: Merges DPI Setting
 printf 'Xft.dpi: 192\n' | xrdb -merge -
 # X Server Startup :: Merges XRESOURCES_FILE
-xrdb -merge "${XRESOURCES_FILE:-$HOME_DIR/.Xresources}" &
-dunst &
-xremap "$CONFIG_DIR/xremap/config.yml" &
-picom -b &
-slstatus &
-zsh "$HOME_BIN/chares-fehbg.zsh" &
+xrdb -merge "${XRESOURCES_FILE:-$HOME_DIR/.Xresources}"
 
 # System Logging :: Logs Window Manager Handoff Point
-system_logger_entry "$__resource:START_DWM" "$__filename" &
-# System Startup :: Clears dmenu Cache
-rm -f "$CACHE_DIR/dmenu_run" &
+system_logger_entry "$__resource:START_DWM" "$__filename"
 # System Logging :: Sets Interactive Log Context
-system_logger_set_context "INTERACTIVE_SHELL" "$__filename" &
+system_logger_set_context "INTERACTIVE_SHELL" "$__filename"
+
 # System Startup :: Starts Window Manager
+dunst &
+picom -b &
+slstatus &
+xremap "/home/chares/.config/xremap/config.yml" &
+zsh "/home/chares/bin/chares-fehbg.zsh" &
 while true; do
-	dwm 2> "$HOME_DIR/.dwm.log"
+	rm -f "/home/chares/.cache/dmenu_run"
+	dwm 2> "/home/chares/.dwm.log"
 done
 
 # System Logging :: Logs XINITRC Finish
