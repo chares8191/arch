@@ -1,7 +1,11 @@
-#!/bin/zsh
+#!/usr/bin/zsh
 
-SYSTEM_SHELL_LOG_FILE="${SYSTEM_SHELL_LOG_FILE:-$HOME/.shell.log}"
-export SYSTEM_SHELL_LOG_FILE
+# SYSTEM_SHELL_LOGGER (zsh)
+unset __resource __filename
+typeset __resource="SYSTEM_SHELL_LOGGER"
+typeset __filename="system-shell-logger.zsh"
+
+SYSTEM_SHELL_LOG_FILE="${SYSTEM_SHELL_LOG_FILE:-$HOME_DIR/.shell.log}"
 
 if [ -z "${SYSTEM_SHELL_TRACE_CHAIN_ID:-}" ]; then
 	SYSTEM_SHELL_TRACE_CHAIN_ID="$(date '+%Y%m%dT%H%M%S%z')"
@@ -60,6 +64,7 @@ system_logger_entry() {
 
 system_logger_set_context() {
 	__st_new_context="${1:-}"
+	
 	if [ -z "$__st_new_context" ]; then
 		return 1
 	fi
@@ -68,11 +73,7 @@ system_logger_set_context() {
 		return 0
 	fi
 
-	if [ -n "${2:-}" ]; then
-		__st_origin="$2"
-	else
-		__st_origin="startup.zsh"
-	fi
+	__st_origin="${2:-$__filename}"
 
 	SYSTEM_LOGGER_CONTEXT="$__st_new_context"
 	export SYSTEM_LOGGER_CONTEXT
@@ -94,7 +95,7 @@ if [ -z "$__st_inherited_session" ] || [ "$__st_inherited_pid" != "$$" ]; then
 	SYSTEM_SHELL_TRACE_SESSION_ID="${SYSTEM_SHELL_TRACE_CHAIN_ID}.$$"
 	SYSTEM_SHELL_TRACE_SESSION_PID="$$"
 	export SYSTEM_SHELL_TRACE_SESSION_ID SYSTEM_SHELL_TRACE_SESSION_PID SYSTEM_SHELL_TRACE_PARENT_SESSION
-	system_logger_entry "LOGGER_SESSION_START" "system-logger.zsh" "$$" "$PPID"
+	system_logger_entry "$__resource:START" "$__filename" "$$" "$PPID"
 fi
 
 unset __st_inherited_session __st_inherited_pid

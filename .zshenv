@@ -1,26 +1,30 @@
-#!/bin/zsh
+emulate -L zsh
 
 # ZSHENV (zsh)
+unset __resource __filename
+typeset __resource="ZSHENV"
+typeset __filename=".zshenv"
 
 # System Startup :: Startup Timestamp
 if [[ -z "${SYSTEM_STARTUP_TIMESTAMP:-}" ]]; then
 	export SYSTEM_STARTUP_TIMESTAMP="$(date '+%Y-%m-%dT%H:%M:%S%z')"
 fi
 
-# System Files :: Exports SYSTEM_SHELL_LOGGER File
-export SYSTEM_SHELL_LOGGER="/home/chares/bin/system-logger.zsh"
+# System Directories :: Exports HOME_DIR Directory
+export HOME_DIR="${HOME_DIR:-/home/chares}"
+
 # System Logging :: Initializes Context for Startup Shells
 if [[ -z "${SYSTEM_LOGGER_CONTEXT:-}" ]]; then
 	export SYSTEM_LOGGER_CONTEXT="STARTUP_LOGIN_SHELL"
 fi
-# System Startup :: Loads System Logger Script
-if [[ -f "$SYSTEM_SHELL_LOGGER" ]]; then . "$SYSTEM_SHELL_LOGGER"; fi
-
+# System Files :: Exports SYSTEM_SHELL_LOGGER File
+export SYSTEM_SHELL_LOGGER="${SYSTEM_SHELL_LOGGER:-$HOME_DIR/bin/system-shell-logger.zsh}"
+# System Log Files :: Exports SYSTEM_SHELL_LOG_FILE Log File
+export SYSTEM_SHELL_LOG_FILE="${SYSTEM_SHELL_LOG_FILE:-$HOME_DIR/.shell.log}"
+# System Startup :: Sources SYSTEM_SHELL_LOGGER File
+if [[ -f "$SYSTEM_SHELL_LOGGER" ]]; then source "$SYSTEM_SHELL_LOGGER"; fi
 # System Logging :: Logs ZSHENV Start
-system_logger_entry "ZSHENV:START" ".zshenv"
-
-# System Directories :: Exports HOME_DIR Directory
-export HOME_DIR="${HOME_DIR:-/home/chares}"
+system_logger_entry "$__resource:START" "$__filename"
 
 # System Bin Locations :: Exports USR_BIN Bin Location
 export USR_BIN="${USR_BIN:-/usr/bin}"
@@ -50,12 +54,19 @@ fi
 # System Path :: Exports PATH
 export PATH
 
+# System Src Locations :: Exports HOME_SRC Src Location
+export HOME_SRC="${HOME_SRC:-$HOME_DIR/src}"
+
+# System Directories :: Exports CACHE_DIR Directory
+export CACHE_DIR="${CACHE_DIR:-$HOME_DIR/.cache}"
 # System Directories :: Exports CONFIG_DIR Directory
 export CONFIG_DIR="${CONFIG_DIR:-$HOME_DIR/.config}"
 # System Directories :: Exports EMACS_DIR Directory
 export EMACS_DIR="${EMACS_DIR:-$HOME_DIR/.emacs.d}"
 # System Directories :: Exports GRAPHICS_DIR Directory
 export GRAPHICS_DIR="${GRAPHICS_DIR:-$HOME_DIR/.graphics}"
+# System Directories :: Exports SUCKLESS_DIR Directory
+export SUCKLESS_DIR="${SUCKLESS_DIR:-$HOME_DIR/.suckless}"
 # System Directories :: Exports WALLPAPERS_DIR Directory
 export WALLPAPERS_DIR="${WALLPAPERS_DIR:-$HOME_DIR/.wallpapers}"
 
@@ -82,8 +93,11 @@ export ZSH_ALIASES_FILE="${ZSH_ALIASES_FILE:-$HOME_DIR/zsh-aliases.zsh}"
 # System Files :: Exports ZSH_XINITRC_FILE File
 export ZSH_XINITRC_FILE="${ZSH_XINITRC_FILE:-$HOME_DIR/zsh-xinitrc.zsh}"
 
+# User Folders :: Exports SCREENSHOTS_FOLDER Folder
+export SCREENSHOTS_FOLDER="${SCREENSHOTS_FOLDER:-$HOME_DIR/Screenshots}"
+
 # Shell Configuration :: Editor
 export EDITOR="emacs"
 
 # System Logging :: Logs ZSHENV Finish
-system_logger_entry "ZSHENV:FINISH" ".zshenv"
+system_logger_entry "$__resource:FINISH" "$__filename"
