@@ -67,11 +67,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Brave", NULL, "wants to open", 0, 1, -1 },
-	{ "GtkFileChooserDialog", NULL, NULL, 0, 1, -1 },
+	/* class                  instance         title            tags mask     isfloating   monitor */
+	{ "Gimp",                 NULL,            NULL,            0,            1,           -1 },
+	{ "Firefox",              NULL,            NULL,            1 << 8,       0,           -1 },
+	{ "Brave",                NULL,            "wants to open", 0,            1,           -1 },
+	{ "GtkFileChooserDialog", NULL,            NULL,            0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -97,12 +97,13 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "$SHELL", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/usr/bin/zsh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", gruvbox_dark_2, "-nf", gruvbox_bright_green, "-sb", gruvbox_light_3, "-sf", gruvbox_faded_blue, NULL };
 static const char *termcmd[]  = { "ghostty", NULL };
+static const char *single_display_cmd[] = { "xrandr-utils", "single_display_output", "eDP-1" };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -121,7 +122,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_F1,     setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_F2,     setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_F3,     setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_F9,     spawn,          SHCMD("/home/chares/.local/bin/xrandr-utils single_display_output eDP-1") },
+	{ MODKEY,                       XK_F9,     spawn,          {.v = single_display_cmd } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },

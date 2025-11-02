@@ -17,12 +17,20 @@ system_logger_entry "$__resource:START" "$__filename"
 # X Startup :: Sources ZSH_XINIT_FILE File
 if [[ -f "$ZSH_XINIT_FILE" ]]; then source "$ZSH_XINIT_FILE"; fi
 
-# X Startup :: Xrandr Output
-xrandr --output eDP-1 --auto --primary
-# X Server Startup :: Merges DPI Setting
-printf 'Xft.dpi: 192\n' | xrdb -merge -
-# X Server Startup :: Merges XRESOURCES_FILE
-xrdb -merge "${XRESOURCES_FILE:-$HOME_DIR/.Xresources}"
+# X Startup :: Xrandr Output and Xresources
+if [[ "$XINIT_40B0_DUAL_DISPLAY_AVAILABLE" == "true" ]]; then
+	# Merges XRESOURCES_FILE Settings
+	xrdb -merge "${XRESOURCES_FILE:-$HOME_DIR/.Xresources}"
+	# Xrandr Outputs to 40B0 Dual Monitors Only
+	xrandr-utils dual_display_output "$XINIT_40B0_LEFT_DISPLAY" "$XINIT_40B0_RIGHT_DISPLAY"
+else
+	# High-Resolution DPI Adjustment
+	printf 'Xft.dpi: 192\n' | xrdb -merge -
+	# Merges XRESOURCES_FILE Settings
+	xrdb -merge "${XRESOURCES_FILE:-$HOME_DIR/.Xresources}"
+	# Xrandr Outputs to Laptop Screen Only
+	xrandr-utils single_display_output "eDP-1"
+fi
 
 # System Logging :: Logs Window Manager Handoff Point
 system_logger_entry "$__resource:START_DWM" "$__filename"
