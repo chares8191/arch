@@ -1,0 +1,22 @@
+{
+	"__ASSIGNMENTS__": {
+		"__NV_PRIME_RENDER_OFFLOAD": "1",
+		"__GLX_VENDOR_LIBRARY_NAME": "nvidia",
+	},
+	"__EXECUTABLE__": "prime-run",
+	"__COMMANDS__": [
+		{
+			"__ASSIGNMENTS__": {},
+			"__EXECUTABLE__": "portablemc",
+			"__COMMANDS__": ["start"],
+			"__OPTIONS__": [
+				{
+					"__OPTION__": "-l",
+					"__VALUES__": []
+				}
+			]
+		}
+	],
+	"__OPTIONS__": [],
+	"__ARGUMENTS__": [],
+}

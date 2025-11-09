@@ -12,6 +12,15 @@ fi
 
 # System Directories :: Exports HOME_DIR Directory
 export HOME_DIR="${HOME_DIR:-/home/chares}"
+# Shell Configuration :: Editor
+export EDITOR="emacs"
+# System Directories :: Exports XDG User Directories
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME_DIR/.cache}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME_DIR/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME_DIR/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME_DIR/.local/state}"
+# System Directories :: Exports JAVA_HOME Directory
+export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/graalvm-jdk-25}"
 
 # System Logging :: Initializes Context for Startup Shells
 if [[ -z "${SYSTEM_LOGGER_CONTEXT:-}" ]]; then
@@ -39,6 +48,8 @@ export HOME_BIN="${HOME_BIN:-$HOME_DIR/bin}"
 export LOCAL_BIN="${LOCAL_BIN:-$HOME_DIR/.local/bin}"
 # System Bin Locations :: Exports BUN_BIN Bin Location
 export BUN_BIN="${BUN_BIN:-$HOME_DIR/.bun/bin}"
+# System Bin Locations :: Exports JAVA_BIN Bin Location
+export JAVA_BIN="${JAVA_BIN:-$JAVA_HOME/bin}"
 
 # System Path :: Prepends USR_BIN Location
 if [[ ":$PATH:" != *":$USR_BIN:"* ]]; then
@@ -56,6 +67,11 @@ fi
 if [[ -d "$BUN_BIN" && ":$PATH:" != *":$BUN_BIN:"* ]]; then
 	PATH="$PATH:$BUN_BIN"
 fi
+# System Path :: Appends JAVA_BIN Location
+if [[ -d "$JAVA_BIN" && ":$PATH:" != *":$JAVA_BIN:"* ]]; then
+	PATH="$PATH:$JAVA_BIN"
+fi
+
 # System Path :: Exports PATH
 export PATH
 
@@ -97,12 +113,11 @@ export ZSH_BINDKEYS_FILE="${ZSH_BINDKEYS_FILE:-$HOME_DIR/zsh-bindkeys.zsh}"
 export ZSH_ALIASES_FILE="${ZSH_ALIASES_FILE:-$HOME_DIR/zsh-aliases.zsh}"
 # System Files :: Exports ZSH_XINIT_FILE File
 export ZSH_XINIT_FILE="${ZSH_XINIT_FILE:-$HOME_DIR/zsh-xinit.zsh}"
+# System Binaries :: Exports JVM_PATH Binary
+export JVM_PATH="${JVM_PATH:-$JAVA_HOME/bin/java}"
 
 # User Folders :: Exports SCREENSHOTS_FOLDER Folder
 export SCREENSHOTS_FOLDER="${SCREENSHOTS_FOLDER:-$HOME_DIR/Screenshots}"
-
-# Shell Configuration :: Editor
-export EDITOR="emacs"
 
 # System Logging :: Logs ZSHENV Finish
 system_logger_entry "$__resource:FINISH" "$__filename"

@@ -48,6 +48,7 @@ if (( ${#__directories} == 0 )); then
 fi
 
 typeset __removed_any=0
+
 for __dir in "${__directories[@]}"; do
     typeset -a __tilde_files=("$__dir"/*\~(N))
     if (( ${#__tilde_files} == 0 )); then

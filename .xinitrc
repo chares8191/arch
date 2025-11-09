@@ -14,6 +14,16 @@ fi
 # System Logging :: Logs XINITRC Start
 system_logger_entry "$__resource:START" "$__filename"
 
+# X Startup :: Default XINITRC Block
+typeset __xinitdir="/etc/X11/xinit"
+if [[ -d "$__xinitdir/xinitrc.d" ]] ; then
+    for __f in "$__xinitdir/xinitrc.d"/?*.sh ; do
+		[[ -x "$__f" ]] && . "$__f"
+	done
+	unset __f
+fi
+unset __xinitdir
+
 # X Startup :: Sources ZSH_XINIT_FILE File
 if [[ -f "$ZSH_XINIT_FILE" ]]; then source "$ZSH_XINIT_FILE"; fi
 
