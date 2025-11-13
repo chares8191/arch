@@ -21,7 +21,7 @@ alias pbcopy="xclip -selection clipboard"
 # Interactive Shell Alias :: pbpaste
 alias pbpaste="xclip -selection clipboard -o"
 # Interactive Shell Alias :: grok_cli
-alias grok_cli="bun /home/chares/src/grok-cli/dist/index.js"
+# alias grok_cli="bun /home/chares/src/grok-cli/dist/index.js"
 
 # System Logging :: Logs ZSH_ALIASES Finish
 system_logger_entry "$__resource:FINISH" "$__filename"

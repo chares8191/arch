@@ -47,7 +47,7 @@ export HOME_BIN="${HOME_BIN:-$HOME_DIR/bin}"
 # System Bin Locations :: Exports LOCAL_BIN Bin Location
 export LOCAL_BIN="${LOCAL_BIN:-$HOME_DIR/.local/bin}"
 # System Bin Locations :: Exports BUN_BIN Bin Location
-export BUN_BIN="${BUN_BIN:-$HOME_DIR/.bun/bin}"
+# export BUN_BIN="${BUN_BIN:-$HOME_DIR/.bun/bin}"
 # System Bin Locations :: Exports JAVA_BIN Bin Location
 export JAVA_BIN="${JAVA_BIN:-$JAVA_HOME/bin}"
 
@@ -64,9 +64,9 @@ if [[ -d "$LOCAL_BIN" && ":$PATH:" != *":$LOCAL_BIN:"* ]]; then
 	PATH="$LOCAL_BIN:$PATH"
 fi
 # System Path :: Appends BUN_BIN Location
-if [[ -d "$BUN_BIN" && ":$PATH:" != *":$BUN_BIN:"* ]]; then
-	PATH="$PATH:$BUN_BIN"
-fi
+# if [[ -d "$BUN_BIN" && ":$PATH:" != *":$BUN_BIN:"* ]]; then
+# 	PATH="$PATH:$BUN_BIN"
+# fi
 # System Path :: Appends JAVA_BIN Location
 if [[ -d "$JAVA_BIN" && ":$PATH:" != *":$JAVA_BIN:"* ]]; then
 	PATH="$PATH:$JAVA_BIN"

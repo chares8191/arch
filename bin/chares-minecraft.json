@@ -12,7 +12,11 @@
 			"__OPTIONS__": [
 				{
 					"__OPTION__": "-l",
-					"__VALUES__": []
+					"__VALUES__": ["megavoidwalrus@protonmail.ch"]
+				},
+				{
+					"__OPTION__": "--jvm",
+					"__VALUES__": ["$JVM_PATH"]
 				}
 			]
 		}

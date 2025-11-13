@@ -4,3 +4,6 @@
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = git@github.com:chares8191/emacs.git
+[submodule ".local/src/json-to-cli"]
+	path = .local/src/json-to-cli
+	url = git@github.com:chares8191/json-to-cli.git
